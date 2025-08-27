@@ -1,8 +1,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 import { MessageSquare, Users, Zap, Shield, Video, Search } from "lucide-react"
+import Link from "next/link"
+import { redirect } from "next/navigation";
 
-export default function LandingPage() {
+export default async function LandingPage() {
+  const clerkUser = await currentUser();
+  if(!clerkUser) redirect('/sign-in');
+
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Layered background gradients */}
@@ -28,14 +36,24 @@ export default function LandingPage() {
                 <MessageSquare className="h-8 w-8 text-primary" />
                 <span className="text-xl font-bold text-foreground">SlackFlow</span>
               </div>
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" className="text-muted-foreground hover:text-foreground cursor-pointer">
-                  Sign In
-                </Button>
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer">
-                  Sign Up
-                </Button>
-              </div>
+
+              {/* When user is signed in → show UserButton */}
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+
+               {/* When user is signed out → show Sign In / Sign Up */}
+              <SignedOut>
+                <div className="flex items-center space-x-4">
+                  <Button variant="ghost" className="text-muted-foreground hover:text-foreground cursor-pointer">
+                    <Link href='/sign-in' >Sign In</Link>
+                  </Button>
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer">
+                    <Link href='/sign-up' >Sign Up</Link>
+                  </Button>
+                </div>
+              </SignedOut>
+              
             </div>
           </div>
         </header>
@@ -53,7 +71,7 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 cursor-pointer">
-                Get Started
+                <Link href='/sign-in' >Sign In</Link>
               </Button>
               <Button
                 id="#features"
