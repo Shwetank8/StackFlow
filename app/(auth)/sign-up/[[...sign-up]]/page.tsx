@@ -4,7 +4,7 @@ import React from 'react'
 const SignUpPage = () => {
   return (
     <div className='flex h-screen w-full flex-col items-center justify-center gap-10'>
-      <SignUp/>
+      <SignUp />
     </div>
   )
 }

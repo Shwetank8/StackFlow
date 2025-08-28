@@ -1,14 +1,13 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 import { MessageSquare, Users, Zap, Shield, Video, Search } from "lucide-react"
 import Link from "next/link"
-import { redirect } from "next/navigation";
 
-export default async function LandingPage() {
-  const clerkUser = await currentUser();
-  if(!clerkUser) redirect('/sign-in');
+export default  function LandingPage() {
+
 
 
   return (
@@ -39,7 +38,15 @@ export default async function LandingPage() {
 
               {/* When user is signed in → show UserButton */}
               <SignedIn>
-                <UserButton />
+                <div className="flex items-center gap-4 ml-20">
+                  <Button
+                    variant="ghost"
+                    className="text-muted-foreground hover:text-foreground cursor-pointer"
+                  >
+                    <Link href='/projects' >Projects</Link>
+                  </Button>
+                  <UserButton />
+                </div>
               </SignedIn>
 
                {/* When user is signed out → show Sign In / Sign Up */}
